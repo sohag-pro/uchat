@@ -2,6 +2,9 @@ var $messages = $('.messages-content'),
   d, h, m,
   i = 0;
 
+//get last message id $(this).attr('data-id')
+var last_id = $('.message:last').attr('data-id');
+console.log(last_id);
 
 //on load check for new messages    
 $(window).load(function () {
@@ -33,6 +36,7 @@ function insertMessage() {
 
   //get value from input
   msg = $('.message-input').val();
+  user = $('.user').val();
 
   // return false if no text
   if ($.trim(msg) == '') {
@@ -40,10 +44,13 @@ function insertMessage() {
   }
 
   //add message to list
-  $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
+  $('<div class="message message-personal" data-id="' + (last_id++) + '">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
 
   //set time after message
   setDate();
+
+  //save to database
+  new_message(msg, user);
 
   //make input field blank
   $('.message-input').val(null);
@@ -112,7 +119,7 @@ function fakeMessage() {
     $('.message.loading').remove();
 
     //add the new message to list
-    $('<div class="message new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure>' + Fake[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');
+    $('<div class="message new" data-id="' + (last_id++) +'"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure>' + Fake[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');
 
     //add time stamp
     setDate();
@@ -122,4 +129,21 @@ function fakeMessage() {
     i++;
   }, 1000 + (Math.random() * 20) * 100);
 
+}
+
+
+function new_message(content, user) {
+  $.ajax({
+    url: "chat.php",
+    method: "POST",
+    data: {
+      form: 'new',
+      user: user,
+      content: content
+    },
+    dataType: "text",
+    success: function(data) {
+      // $('.messages-content').html(data);
+    }
+  });
 }
