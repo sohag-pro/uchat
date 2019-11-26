@@ -155,6 +155,7 @@ function new_message(content, user, touser) {
 }
 
 var count = 1;
+var update_last_id = 1;
 
 setInterval(function () {
   get_message(last_id);
@@ -162,27 +163,25 @@ setInterval(function () {
 
 //get message
 function get_message(last_id) {
-  user = $('.user').val();
-  touser = $('.touser').val();
-  $.ajax({
-    url: "chat.php",
-    method: "POST",
-    data: {
-      form: 'old',
-      user: user,
-      touser: touser,
-      last_id: last_id
-    },
-    dataType: "text",
-    success: function (data) {
-      if (data != '') {
-        var pdata = JSON.parse(data);
-        $(pdata.html).appendTo($('.mCSB_container'));
-        new_last_id = pdata.id;
-        console.log(pdata.id);
-        updateScrollbar();
+    user = $('.user').val();
+    touser = $('.touser').val();
+    $.ajax({
+      url: "chat.php",
+      method: "POST",
+      data: {
+        form: 'old',
+        user: user,
+        touser: touser,
+        last_id: last_id
+      },
+      dataType: "text",
+      success: function (data) {
+        if (data != '' && update_last_id < last_id) {
+          var pdata = JSON.parse(data);
+          $(pdata.html).appendTo($('.mCSB_container'));
+          update_last_id = pdata.id;
+          updateScrollbar();
+        }
       }
-      console.log(last_id);
-    }
-  });
-}
+    });
+  }
