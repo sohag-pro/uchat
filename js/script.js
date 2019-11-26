@@ -156,13 +156,13 @@ function new_message(content, user, touser) {
 
 var count = 1;
 var update_last_id = 1;
-
+var last_ids = $('.message:last').attr('data-id') ? $('.message:last').attr('data-id') : 1;
 setInterval(function () {
   get_message(last_id);
 }, 1500);
 
 //get message
-function get_message(last_id) {
+function get_message(last) {
     user = $('.user').val();
     touser = $('.touser').val();
     $.ajax({
@@ -172,14 +172,14 @@ function get_message(last_id) {
         form: 'old',
         user: user,
         touser: touser,
-        last_id: last_id
+        last_id: last
       },
       dataType: "text",
       success: function (data) {
-        if (data != '' && update_last_id < last_id) {
+        if (data != '') {
           var pdata = JSON.parse(data);
           $(pdata.html).appendTo($('.mCSB_container'));
-          update_last_id = pdata.id;
+          last_id = pdata.id;
           updateScrollbar();
         }
       }
