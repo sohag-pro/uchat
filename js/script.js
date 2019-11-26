@@ -136,7 +136,7 @@ function new_message(content, user, touser) {
 
 setInterval(function () {
   get_message(last_id);
-}, 1500);
+}, 50);
 
 //get message
 function get_message(last) {
