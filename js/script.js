@@ -86,26 +86,6 @@ $(window).on('keydown', function (e) {
 })
 
 
-//fake messages
-var Fake = [
-  'Hi there, I\'m Fabio and you?',
-  'Nice to meet you',
-  'How are you?',
-  'Not too bad, thanks',
-  'What do you do?',
-  'That\'s awesome',
-  'Codepen is a nice place to stay',
-  'I think you\'re a nice person',
-  'Why do you think that?',
-  'Can you explain?',
-  'Anyway I\'ve gotta go now',
-  'It was a pleasure chat with you',
-  'Time to make a new codepen',
-  'Bye',
-  ':)'
-]
-
-
 //fake message rendering
 function fakeMessage() {
 
@@ -154,9 +134,6 @@ function new_message(content, user, touser) {
   });
 }
 
-var count = 1;
-var update_last_id = 1;
-var last_ids = $('.message:last').attr('data-id') ? $('.message:last').attr('data-id') : 1;
 setInterval(function () {
   get_message(last_id);
 }, 1500);
