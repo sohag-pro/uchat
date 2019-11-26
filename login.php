@@ -1,3 +1,17 @@
+<?php
+// Start the session
+session_start();
+    
+if (isset($_POST['user'])) {
+    
+    // Set session variables
+    $_SESSION["user"] = $_POST['user'];
+
+    header('location: index.php');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,14 +34,4 @@
 
 </html>
 
-<?php
 
-if (isset($_POST['user'])) {
-    // Start the session
-    session_start();
-    
-    // Set session variables
-    $_SESSION["user"] = $_POST['user'];
-
-    header('location: index.php');
-}

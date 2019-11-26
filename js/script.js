@@ -3,15 +3,19 @@ var $messages = $('.messages-content'),
   i = 0;
 
 //get last message id $(this).attr('data-id')
-var last_id = $('.message:last').attr('data-id');
-console.log(last_id);
+var last_id = $('.message:last').attr('data-id') ? $('.message:last').attr('data-id') : 1;
+
 
 //on load check for new messages    
 $(window).load(function () {
   $messages.mCustomScrollbar();
-  setTimeout(function () {
-    fakeMessage();
-  }, 100);
+
+  //scroll to bottom
+  updateScrollbar();
+
+  // setTimeout(function () {
+  //   fakeMessage();
+  // }, 100);
 });
 
 //scroll to bottom
@@ -37,6 +41,7 @@ function insertMessage() {
   //get value from input
   msg = $('.message-input').val();
   user = $('.user').val();
+  touser = $('.touser').val();
 
   // return false if no text
   if ($.trim(msg) == '') {
@@ -44,13 +49,13 @@ function insertMessage() {
   }
 
   //add message to list
-  $('<div class="message message-personal" data-id="' + (last_id++) + '">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
+  $('<div class="message message-personal" data-id="' + (+last_id + 1) + '">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
 
   //set time after message
   setDate();
 
   //save to database
-  new_message(msg, user);
+  new_message(msg, user, touser);
 
   //make input field blank
   $('.message-input').val(null);
@@ -58,10 +63,10 @@ function insertMessage() {
   //scroll to bottom
   updateScrollbar();
 
-  // check for new message and append
-  setTimeout(function () {
-    fakeMessage();
-  }, 1000 + (Math.random() * 20) * 100);
+  // // check for new message and append
+  // setTimeout(function () {
+  //   fakeMessage();
+  // }, 1000 + (Math.random() * 20) * 100);
 
 }
 
@@ -110,40 +115,74 @@ function fakeMessage() {
   }
 
   //add typing animation
-  $('<div class="message loading new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure><span></span></div>').appendTo($('.mCSB_container'));
+  // $('<div class="message loading new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure><span></span></div>').appendTo($('.mCSB_container'));
   updateScrollbar();
 
   //remove typing animation and append the new message
-  setTimeout(function () {
-    //remove message loading
-    $('.message.loading').remove();
+  // setTimeout(function () {
+  //remove message loading
+  //$('.message.loading').remove();
 
-    //add the new message to list
-    $('<div class="message new" data-id="' + (last_id++) +'"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure>' + Fake[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');
+  //add the new message to list
+  $('<div class="message new" data-id="' + (last_id++) + '"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure>' + Fake[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');
 
-    //add time stamp
-    setDate();
+  //add time stamp
+  setDate();
 
-    //scroll to bottom
-    updateScrollbar();
-    i++;
-  }, 1000 + (Math.random() * 20) * 100);
+  //scroll to bottom
+  updateScrollbar();
+  i++;
+  // }, 1000 + (Math.random() * 20) * 100);
 
 }
 
-
-function new_message(content, user) {
+//save new message
+function new_message(content, user, touser) {
   $.ajax({
     url: "chat.php",
     method: "POST",
     data: {
       form: 'new',
       user: user,
+      touser: touser,
       content: content
     },
     dataType: "text",
-    success: function(data) {
+    success: function (data) {
       // $('.messages-content').html(data);
+    }
+  });
+}
+
+var count = 1;
+
+setInterval(function () {
+  get_message(last_id);
+}, 1500);
+
+//get message
+function get_message(last_id) {
+  user = $('.user').val();
+  touser = $('.touser').val();
+  $.ajax({
+    url: "chat.php",
+    method: "POST",
+    data: {
+      form: 'old',
+      user: user,
+      touser: touser,
+      last_id: last_id
+    },
+    dataType: "text",
+    success: function (data) {
+      if (data != '') {
+        var pdata = JSON.parse(data);
+        $(pdata.html).appendTo($('.mCSB_container'));
+        new_last_id = pdata.id;
+        console.log(pdata.id);
+        updateScrollbar();
+      }
+      console.log(last_id);
     }
   });
 }
