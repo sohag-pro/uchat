@@ -154,7 +154,6 @@ function get_message(last) {
       },
       dataType: "text",
       success: function (data) {
-        console.log(data);
         if (data != '') {
           var pdata = JSON.parse(data);
           $(pdata.html).appendTo($('.mCSB_container'));

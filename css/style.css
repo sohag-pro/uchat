@@ -19,7 +19,7 @@ body {
   background: linear-gradient(135deg, #044f48, #2a7561);
   background-size: cover;
   font-family: 'Open Sans', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.3;
   overflow: hidden;
 }
@@ -46,9 +46,8 @@ Chat
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  width: 300px;
-  height: 80vh;
-  max-height: 500px;
+  width: 95vw;
+  height: 95vh;
   z-index: 2;
   overflow: hidden;
   box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
@@ -74,13 +73,13 @@ Chat Title
 }
 .chat-title h1, .chat-title h2 {
   font-weight: normal;
-  font-size: 10px;
+  font-size: 18px;
   margin: 0;
   padding: 0;
 }
 .chat-title h2 {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 .chat-title .avatar {
@@ -125,7 +124,7 @@ Messages
   border-radius: 10px 10px 10px 0;
   background: rgba(0, 0, 0, 0.3);
   margin: 8px 0;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.4;
   margin-left: 35px;
   position: relative;
@@ -270,11 +269,11 @@ Message Box
   outline: none !important;
   resize: none;
   color: rgba(255, 255, 255, 0.7);
-  font-size: 11px;
+  font-size: 12px;
   height: 17px;
   margin: 0;
   padding-right: 20px;
-  width: 265px;
+  width: 80%px;
 }
 .message-box textarea:focus:-webkit-placeholder {
   color: transparent;
