@@ -3,7 +3,7 @@ var $messages = $('.messages-content'),
   i = 0;
 
 //get last message id $(this).attr('data-id')
-var last_id = $('.message:last').attr('data-id') ? $('.message:last').attr('data-id') : 1;
+var last_id = $('.message:last').attr('data-id') ? $('.message:last').attr('data-id') : 0;
 
 
 //on load check for new messages    
@@ -13,10 +13,11 @@ $(window).load(function () {
   //scroll to bottom
   updateScrollbar();
 
-  // setTimeout(function () {
-  //   fakeMessage();
-  // }, 100);
+
+  get_message(last_id);
+ 
 });
+
 
 //scroll to bottom
 function updateScrollbar() {
@@ -153,6 +154,7 @@ function get_message(last) {
       },
       dataType: "text",
       success: function (data) {
+        console.log(data);
         if (data != '') {
           var pdata = JSON.parse(data);
           $(pdata.html).appendTo($('.mCSB_container'));

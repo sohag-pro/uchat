@@ -40,7 +40,7 @@ $with = $user == 1 ? 2 : 1;
     <div class="messages">
       <div class="messages-content">
         <?php
-        $sql = "SELECT * FROM message";
+        $sql = "SELECT * FROM message WHERE (user = $user AND touser = $with) OR (user = $with AND touser = $user)";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
